@@ -1,5 +1,6 @@
 Metadata-Version: 2.1
 Name: pkg-check
-Version: 0.1
+Version: 0.1.1
+Summary: A simple and intuitive command-line tool to check if Python packages are installed, with smart suggestions and automatic installation capabilities.
 Author: Kadilana Mbogo
 Author-email: kadilanambogo@gmail.com
