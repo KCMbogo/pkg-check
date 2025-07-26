@@ -4,6 +4,7 @@ import subprocess
 import requests
 import socket
 import difflib
+import re
 
 def is_package_on_pypi(package_name: str) -> bool:
     url = f"https://pypi.org/pypi/{package_name}/json"
@@ -22,8 +23,15 @@ def suggest_similar_package(package_name: str, max_suggestions: int=3):
     response = requests.get("https://pypi.org/simple/")
     if response.status_code != 200:
         return []
-    
-    package_list = response.text.splitlines()
+
+    # Extract package names from HTML using regex
+    # The HTML contains links like: <a href="/simple/package-name/">package-name</a>
+    package_pattern = r'<a href="/simple/[^"]+/">([^<]+)</a>'
+    package_matches = re.findall(package_pattern, response.text)
+
+    # Convert to lowercase for case-insensitive matching
+    package_list = [pkg.lower() for pkg in package_matches]
+
     matches = difflib.get_close_matches(package_name.lower(), package_list, n=max_suggestions, cutoff=0.6)
     return matches
 
